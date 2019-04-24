@@ -6,7 +6,7 @@
 #    By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/08 21:31:12 by ikozlov           #+#    #+#              #
-#    Updated: 2018/06/16 22:53:24 by ivankozlov       ###   ########.fr        #
+#    Updated: 2019/04/24 08:09:43 by ivankozlov       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,15 +52,15 @@ all: $(NAME)
 $(LIB):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(LIB)
+$(NAME): $(LIB) $(OBJ)
+	$(CC) $(FLAGS) libft/libft.a -o $(NAME) $(OBJ)
 	@echo "[INFO] $(NAME) executable created"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
-$(OBJ_DIR)md5/%.o: $(MD5_DIR)%.c $(LIB)
+$(OBJ_DIR)md5/%.o: $(MD5_DIR)%.c
 	@mkdir -p $(OBJ_DIR)$(MD5_DIR)
 	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
