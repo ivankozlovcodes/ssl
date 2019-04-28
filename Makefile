@@ -6,7 +6,7 @@
 #    By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/08 21:31:12 by ikozlov           #+#    #+#              #
-#    Updated: 2019/04/24 08:09:43 by ivankozlov       ###   ########.fr        #
+#    Updated: 2019/04/27 22:20:08 by ivankozlov       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,12 @@ NAME = ft_ssl
 # compiler
 CC = gcc
 DEBUG = -g
-FLAGS = -Wall -Wextra -Werror
-FLAGS += $(DEBUG)
+ENV = ${C_ENV}
+ifeq ($(ENV), DEV)
+	FLAGS = $(DEBUG)
+else ifeq ($(ENV), PROD)
+	FLAGS = -Wall -Wextra -Werror
+endif
 
 # directories
 OBJ_DIR = obj/
