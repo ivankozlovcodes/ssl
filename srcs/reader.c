@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:11:22 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/27 23:28:21 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/28 00:54:48 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "ft_ssl.h"
 #include "ft_md5.h"
 #include "memory.h"
-#include "strings.h"
+#include "ftstring.h"
 
 ssize_t	read_chunk(int fd, size_t size, void **buf)
 {

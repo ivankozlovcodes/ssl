@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 20:32:24 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/27 23:41:07 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/28 00:55:00 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "ft_md5.h"
 
 #include "ft_math.h"
-#include "strings.h"
+#include "ftstring.h"
 
 int				ssl_get_set_flag(int get, int set)
 {

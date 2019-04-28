@@ -6,13 +6,13 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/27 22:08:29 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/28 00:55:05 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
 #include "ft_md5.h"
-#include "strings.h"
+#include "ftstring.h"
 #include "ft_printf.h"
 
 unsigned int g_s[64] = {
