@@ -6,20 +6,23 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:11:22 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/24 08:07:51 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/27 23:28:21 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 
+#include "ft_ssl.h"
+#include "ft_md5.h"
+#include "memory.h"
 #include "strings.h"
 
-char	*read_chunk(int fd, size_t size)
+ssize_t	read_chunk(int fd, size_t size, void **buf)
 {
-	int		ret;
-	int 	buffer[size + 1];
+	ssize_t		ret;
 
-	ret = read(fd, buffer, size);
-	buffer[ret] = '\0';
-	return ft_strdup((const char *)buffer);
+	ft_bzero(*buf, size);
+	ret = read(fd, *buf, size);
+	return (ret);
 }
