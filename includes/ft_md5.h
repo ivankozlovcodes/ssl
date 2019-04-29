@@ -32,6 +32,7 @@
 extern unsigned int				g_s[64];
 extern unsigned int				g_k[64];
 extern int						g_printed_file;
+extern int						g_printed_stdin;
 extern int						g_printed_string;
 extern const t_md5_step_helper	g_md5_step_dispatch_table[];
 

@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:12:58 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 12:32:03 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 16:06:36 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "memory.h"
 
 int		g_printed_file = 0;
+int		g_printed_stdin = 0;
 
 void	md5_fd(const int fd, t_md5 *md5)
 {
@@ -40,16 +41,15 @@ void	md5_fd(const int fd, t_md5 *md5)
 void	md5_stdin(void)
 {
 	t_md5			md5;
-	static int		printed = 0;
 
-	md5.d = printed ? init_digest_empty_string() : init_digest();
-	md5.message = ssl_get_set_flag(FLAG_P, 0)
+	md5.d = g_printed_stdin ? init_digest_empty_string() : init_digest();
+	md5.message = ssl_get_toggle_flag(FLAG_P, 0)
 		? string_init(MD5_CHUNK_SIZE) : NULL;
-	md5_fd(0 - printed, &md5);
+	md5_fd(0 - g_printed_stdin, &md5);
 	md5_print_result(NULL, md5);
 	if (md5.message)
 		string_destroy(md5.message, FALSE);
-	printed = 1;
+	g_printed_stdin = 1;
 }
 
 void	md5_file(const char *filename)
@@ -60,10 +60,10 @@ void	md5_file(const char *filename)
 	md5.d = init_digest();
 	md5.message = NULL;
 	fd = open(filename, O_RDONLY);
+	g_printed_file = 1;
 	if (fd < 0)
 		return (error_handler(ERR_FILE_NOT_FOUND, 0, filename));
 	md5_fd(fd, &md5);
 	md5_print_result(filename, md5);
-	g_printed_file = 1;
 	close(fd);
 }
