@@ -21,6 +21,10 @@ void		error_handler(t_err errcode, int should_exit, const char *info)
 		ft_printf("File not found: %s\n", info);
 	else if (errcode == ERR_READ_FILE)
 		ft_printf("Can't read from file: %s\n", info);
+	else if (errcode == ERR_ILLEGAL_OPTION)
+		ft_printf(": illegal option -- %c\n%s\n", *info, USAGE);
+	else if (errcode == ERR_NO_ARG)
+		ft_printf(": option requires an argument -- %s\n%s\n", info, USAGE);
 	else
 		ft_printf(
 	"Something terrible happened. Please, reconsider your actions\n");

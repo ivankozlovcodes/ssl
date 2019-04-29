@@ -26,6 +26,7 @@ enum	e_err
 	ERR_READ_FILE,
 	ERR_FILE_NOT_FOUND,
 	ERR_ILLEGAL_OPTION,
+	ERR_NO_ARG,
 };
 
 typedef enum e_err		t_err;
