@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 22:03:06 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/28 21:57:08 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 11:38:05 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ struct							s_md5_digest
 };
 typedef struct s_md5_digest		t_md5_digest;
 
-typedef struct
+typedef struct					s_md5
 {
-	t_string					*message;
 	t_md5_digest				d;
+	t_string					*message;
 }								t_md5;
 
-typedef struct
+typedef struct					s_chunk
 {
 	size_t						size;
 	unsigned char				*msg;
 }								t_chunk;
 
-typedef							void (*t_md5_step_helper)
-	(t_md5_digest, unsigned int*, unsigned int*, int);
+typedef void					(*t_md5_step_helper) (t_md5_digest,
+	unsigned int*, unsigned int*, int);
 
 #endif
