@@ -18,6 +18,11 @@
 
 # define MD5_FLAGS "prqs"
 
+# define FLAG_P 1
+# define FLAG_R 2
+# define FLAG_Q 4
+# define FLAG_S 8
+
 # define MD5_CHUNK_SIZE 64
 
 extern unsigned int		g_s[64];
