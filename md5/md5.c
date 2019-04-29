@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 12:30:42 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 16:17:20 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,16 @@ void	md5_main(int ac, char *av[])
 		if (av[i][0] == '-' && !g_printed_file)
 		{
 			flag_leftover = ssl_parse_flag(av[i]);
-			if (ssl_get_set_flag(FLAG_P, 0))
-				md5_stdin();
-			if (*flag_leftover)
-				md5_string(flag_leftover);
-			ssl_get_set_flag(0, 0);
+			ssl_get_toggle_flag(FLAG_P, 0) ? md5_stdin() : (void)0;
+			*flag_leftover && !ssl_get_toggle_flag(0, FLAG_S)
+				? md5_string(flag_leftover) : (void)0;
+			DOIFTRUE(ssl_get_toggle_flag(FLAG_P, 0), ssl_get_toggle_flag(0, FLAG_P));
 			continue ;
 		}
-		ssl_get_set_flag(FLAG_S, 0) ? md5_string(av[i]) : md5_file(av[i]);
-		ssl_get_set_flag(0, 0);
+		ssl_get_toggle_flag(FLAG_S, 0) ? md5_string(av[i]) : md5_file(av[i]);
+		DOIFTRUE(ssl_get_toggle_flag(FLAG_S, 0), ssl_get_toggle_flag(0, FLAG_S));
 	}
-	if (!g_printed_file && !g_printed_string)
-	{
-		if (ssl_get_set_flag(FLAG_S, 0))
-			error_handler(ERR_NO_ARG, 1, "s");
-		md5_stdin();
-	}
+	if (!g_printed_file && !g_printed_string && !g_printed_stdin)
+		ssl_get_toggle_flag(FLAG_S, 0) ? error_handler(ERR_NO_ARG, 1, "s")
+			: md5_stdin();
 }
