@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 20:32:24 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 11:33:27 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 16:07:10 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@
 #include "ftstring.h"
 #include "ft_printf.h"
 
-int			ssl_get_set_flag(int get, int set)
+int			ssl_get_toggle_flag(int get, int toggle)
 {
 	static unsigned char	flags;
-	static unsigned char	persistent = FLAG_Q | FLAG_R;
 
-	flags |= set;
-	flags &= (get | set) > 0 ? flags : persistent;
+	flags ^= toggle;
 	return (flags & get);
 }
 
@@ -39,7 +37,7 @@ char		*ssl_parse_flag(char *arg)
 		if (idx == -1)
 			error_handler(ERR_ILLEGAL_OPTION, 1, &(arg[i]));
 		flag = 1 << idx;
-		ssl_get_set_flag(0, flag);
+		ssl_get_toggle_flag(0, flag);
 		if (flag == FLAG_S)
 			return (arg + i + 1);
 	}

@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/27 23:30:21 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 16:15:05 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 # define ALG_NUM 1
 # define USAGE "usage: ft_ssl command [command opts] [command args]"
+
+# define DOIFTRUE(cond, expr) ((cond) ? (expr) : (void)0)
 
 enum	e_err
 {
@@ -43,7 +45,7 @@ void					md5_main(int ac, char *av[]);
 **	Flags
 */
 int						ssl_parse_flags(int ac, char *av[]);
-int						ssl_get_set_flag(int get, int set);
+int						ssl_get_toggle_flag(int get, int toggle);
 
 ssize_t					read_chunk(int fd, size_t size, void **buf);
 t_chunk					*get_chunk(int fd, size_t chunk_size);

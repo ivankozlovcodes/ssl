@@ -65,14 +65,14 @@ void	md5_print_result(const char *filename, t_md5 md5)
 	char			quote;
 	unsigned int	*digest;
 
-	quote = ssl_get_set_flag(FLAG_S, 0) ? '"' : 0;
-	if (filename && !ssl_get_set_flag(FLAG_Q | FLAG_R, 0))
+	quote = ssl_get_toggle_flag(FLAG_S, 0) ? '"' : 0;
+	if (filename && !ssl_get_toggle_flag(FLAG_Q | FLAG_R, 0))
 		ft_printf("MD5 (%c%s%c) = ", quote, filename, quote);
-	if (ssl_get_set_flag(FLAG_P, 0) && md5.message)
+	if (ssl_get_toggle_flag(FLAG_P, 0) && md5.message)
 		ft_printf("%s", md5.message->content);
 	digest = digest_to_array(md5.d);
 	ft_printf("%.8x%.8x%.8x%.8x", digest[0], digest[1], digest[2], digest[3]);
-	if (filename && ssl_get_set_flag(FLAG_R, 0) && !ssl_get_set_flag(FLAG_Q, 0))
+	if (filename && ssl_get_toggle_flag(FLAG_R, 0) && !ssl_get_toggle_flag(FLAG_Q, 0))
 		ft_printf(" %c%s%c", quote, filename, quote);
 	ft_printf("\n");
 }
