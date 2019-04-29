@@ -62,10 +62,20 @@ int		md5_process_chunk(t_chunk *chunk, t_md5_digest *d, size_t *total)
 	return (last);
 }
 
-void	md5_file(const char *filename)
+void	print_result(const char *filename, t_md5 md5)
 {
-	t_md5_digest	d;
-	int				fd;
+	size_t			i;
+	char			quote;
+	unsigned int	*digest;
+
+	quote = ssl_get_set_flag(FLAG_S, 0) ? '"' : 0;
+	if (filename && !ssl_get_set_flag(FLAG_Q, 0))
+		ft_printf("MD5 (%c%s%c) = ", quote, filename, quote);
+	if (ssl_get_set_flag(FLAG_P, 0) && md5.message)
+		ft_printf("%s", md5.message->content);
+	digest = digest_to_array(md5.d);
+	ft_printf("%.8x%.8x%.8x%.8x\n", digest[0], digest[1], digest[2], digest[3]);
+}
 	int				last;
 	size_t			total;
 	t_chunk			*chunk;
