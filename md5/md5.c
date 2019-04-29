@@ -81,8 +81,56 @@ void	md5_file(const char *filename)
 		last = md5_process_chunk(chunk, &d, &total);
 		ft_free(2, chunk->msg, chunk);
 	}
-	print_digest(d);
+
+void	md5_file(const char *filename)
+{
+	int				fd;
+	t_md5			md5;
+
+	md5.d = init_digest();
+	md5.message = NULL;
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return (error_handler(ERR_FILE_NOT_FOUND, 0, filename));
+	md5_fd(fd, &md5);
+	print_result(filename, md5);
 	close(fd);
+}
+
+void	md5_stdin(void)
+{
+	t_md5			md5;
+
+	md5.d = init_digest();
+	md5.message = ssl_get_set_flag(FLAG_P, 0)
+		? string_init(MD5_CHUNK_SIZE) : NULL;
+	md5_fd(0, &md5);
+	print_result(NULL, md5);
+	if (md5.message)
+		string_destroy(md5.message, FALSE);
+}
+
+void	md5_string(char *string)
+{
+	t_md5				md5;
+	size_t				pos;
+	size_t				total;
+	t_chunk				chunk;
+	const size_t		s_len = ft_strlen((const char *)string);
+
+	pos = 0;
+	total = 0;
+	md5.d = init_digest();
+	md5.message = NULL;
+	while (pos <= s_len)
+	{
+		chunk.msg = ft_memdup(string + pos, MD5_CHUNK_SIZE);
+		pos += MD5_CHUNK_SIZE;
+		chunk.size = pos > s_len ? s_len % MD5_CHUNK_SIZE : MD5_CHUNK_SIZE;
+		ft_bzero(chunk.msg + chunk.size, MD5_CHUNK_SIZE - chunk.size);
+		md5_process_chunk(&chunk, &(md5.d), &total);
+	}
+	print_result(string, md5);
 }
 
 void	md5_main(int ac, char *av[])
