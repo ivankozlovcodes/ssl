@@ -6,18 +6,19 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/28 00:39:20 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 01:42:41 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
-#include <stdio.h>
 #include <unistd.h>
 
 #include "ft_ssl.h"
 #include "ft_md5.h"
 #include "memory.h"
 #include "numbers.h"
+#include "ftstring.h"
+#include "ft_printf.h"
 
 void	md5(unsigned char *chunk, t_md5_digest *digest)
 {
@@ -76,21 +77,23 @@ void	print_result(const char *filename, t_md5 md5)
 	digest = digest_to_array(md5.d);
 	ft_printf("%.8x%.8x%.8x%.8x\n", digest[0], digest[1], digest[2], digest[3]);
 }
+
+void		md5_fd(const int fd, t_md5 *md5)
+{
 	int				last;
 	size_t			total;
 	t_chunk			*chunk;
 
-	d = init_digest();
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return (error_handler(ERR_FILE_NOT_FOUND, 0, filename));
 	last = 0;
 	total = 0;
 	while ((chunk = get_chunk(fd, MD5_CHUNK_SIZE)) && !last)
 	{
-		last = md5_process_chunk(chunk, &d, &total);
+		if (md5->message)
+			string_append(md5->message, (char *)chunk->msg);
+		last = md5_process_chunk(chunk, &(md5->d), &total);
 		ft_free(2, chunk->msg, chunk);
 	}
+}
 
 void	md5_file(const char *filename)
 {
@@ -147,12 +150,23 @@ void	md5_main(int ac, char *av[])
 {
 	int				i;
 
-	i = 0;
-	while (i < ac)
+	i = -1;
+	while (++i < ac)
 	{
 		ssl_get_set_flag(0, 0);
 		i += ssl_parse_flags(ac - i, av + i);
-		md5_file(av[i]);
-		i++;
+		if (ssl_get_set_flag(FLAG_P, 0))
+			md5_stdin();
+		if (i >= ac)
+		{
+			if (ssl_get_set_flag(FLAG_S, 0))
+				error_handler(ERR_NO_ARG, 1, "s");
+			else if (ssl_get_set_flag(FLAG_Q | FLAG_R, 0))
+				ssl_get_set_flag(FLAG_Q, FLAG_Q) ? md5_string("") : (void)0;
+			else
+				md5_stdin();
+			break ;
+		}
+		ssl_get_set_flag(FLAG_S, 0) ? md5_string(av[i]) : md5_file(av[i]);
 	}
 }
