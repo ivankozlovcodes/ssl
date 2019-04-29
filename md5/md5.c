@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 16:33:07 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 16:37:18 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void	md5_print_result(const char *filename, t_md5 md5)
 		ft_printf("%s", md5.message->content);
 	digest = digest_to_array(md5.d);
 	ft_printf("%.8x%.8x%.8x%.8x", digest[0], digest[1], digest[2], digest[3]);
-	if (filename && ssl_get_toggle_flag(FLAG_R, 0) && !ssl_get_toggle_flag(FLAG_Q, 0))
+	if (filename && ssl_get_toggle_flag(FLAG_R, 0)
+		&& !ssl_get_toggle_flag(FLAG_Q, 0))
 		ft_printf(" %s%s%s", quote, filename, quote);
 	ft_printf("\n");
 }
@@ -91,11 +92,11 @@ void	md5_main(int ac, char *av[])
 			ssl_get_toggle_flag(FLAG_P, 0) ? md5_stdin() : (void)0;
 			*flag_leftover && !ssl_get_toggle_flag(0, FLAG_S)
 				? md5_string(flag_leftover) : (void)0;
-			DOIFTRUE(ssl_get_toggle_flag(FLAG_P, 0), ssl_get_toggle_flag(0, FLAG_P));
+			UNSET_FLAG(FLAG_P);
 			continue ;
 		}
 		ssl_get_toggle_flag(FLAG_S, 0) ? md5_string(av[i]) : md5_file(av[i]);
-		DOIFTRUE(ssl_get_toggle_flag(FLAG_S, 0), ssl_get_toggle_flag(0, FLAG_S));
+		UNSET_FLAG(FLAG_S);
 	}
 	if (!g_printed_file && !g_printed_string && !g_printed_stdin)
 		ssl_get_toggle_flag(FLAG_S, 0) ? error_handler(ERR_NO_ARG, 1, "s")

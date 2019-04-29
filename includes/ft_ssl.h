@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 16:15:05 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 16:40:19 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ void					md5_main(int ac, char *av[]);
 */
 int						ssl_parse_flags(int ac, char *av[]);
 int						ssl_get_toggle_flag(int get, int toggle);
+
+# define GET_FLAG(f) (ssl_get_toggle_flag(f, 0))
+# define UNSET_FLAG(f) (DOIFTRUE(GET_FLAG(f), ssl_get_toggle_flag(0, f)))
 
 ssize_t					read_chunk(int fd, size_t size, void **buf);
 t_chunk					*get_chunk(int fd, size_t chunk_size);
