@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 17:02:57 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/28 00:35:33 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/28 23:36:44 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,17 @@
 
 t_md5_digest	init_digest()
 {
-	static const unsigned int	defaults[] =
-		{ 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 };
-	return *(t_md5_digest *)defaults;
+	static const unsigned int	defaults[] = { 0x67452301, 0xefcdab89,
+		0x98badcfe, 0x10325476 };
+
+	return (*(t_md5_digest *)defaults);
 }
 
 unsigned int	*digest_to_array(t_md5_digest d)
 {
-	unsigned int	ret[4];
+	const unsigned int	ret[4] = { to_little_endian(d.a), to_little_endian(d.b),
+		to_little_endian(d.c), to_little_endian(d.d) };
 
-	ret[0] = to_little_endian(d.a);
-	ret[1] = to_little_endian(d.b);
-	ret[2] = to_little_endian(d.c);
-	ret[3] = to_little_endian(d.d);
 	return (ft_memdup(ret, sizeof(unsigned int) * 4));
 }
 

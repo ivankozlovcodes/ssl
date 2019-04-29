@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 08:16:00 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/28 00:34:11 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/28 23:42:15 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void								md5(unsigned char *chunk,
 	t_md5_digest *digest);
 void			md5_padd_chunk(t_chunk *chunk, size_t total);
 void			print_digest(t_md5_digest d);
+unsigned int	*digest_to_array(t_md5_digest d);
 
 // helpers
 void	print_chunk(unsigned char *chunk);
