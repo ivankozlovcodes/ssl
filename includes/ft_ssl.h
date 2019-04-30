@@ -19,6 +19,7 @@
 # include "structs.h"
 
 # define ALG_NUM 1
+# define PREFIX "ft_ssl:"
 # define USAGE "usage: ft_ssl command [command opts] [command args]"
 
 # define DOIFTRUE(cond, expr) ((cond) ? (expr) : (void)0)
@@ -31,7 +32,7 @@ enum	e_err
 	ERR_NO_ARG,
 };
 
-typedef enum e_err		t_err;
+extern char				*g_hash_func_name;
 
 void					error_handler(t_err errcode,
 	int exit, const char *info);
