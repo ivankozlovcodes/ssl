@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 16:40:19 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 16:57:28 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ enum	e_err
 	ERR_ILLEGAL_OPTION,
 	ERR_NO_ARG,
 };
+typedef enum e_err		t_err;
 
 extern char				*g_hash_func_name;
 
