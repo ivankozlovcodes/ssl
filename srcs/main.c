@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/28 00:55:05 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/04/29 17:40:22 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "ft_md5.h"
 #include "ftstring.h"
 #include "ft_printf.h"
+
+char			*g_hash_func_name = NULL;
 
 unsigned int g_s[64] = {
 	7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
@@ -60,6 +62,7 @@ t_hash_main		*get_hash_func(char *name)
 	static char const			*lookup[ALG_NUM] = { "md5" };
 	static t_hash_main	funcs[] = { &md5_main };
 
+	g_hash_func_name = name;
 	idx = ft_straridx(name, (char **)lookup);
 	return (idx == -1 ? NULL : &funcs[idx]);
 }
