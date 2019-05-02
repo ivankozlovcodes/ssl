@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 19:49:22 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 16:57:21 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 11:11:38 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void		error_handler(t_err errcode, int should_exit, const char *info)
 	else
 		ft_printf(
 	"Something terrible happened. Please, reconsider your actions\n");
-
 	if (should_exit)
 		exit(-1);
 }
