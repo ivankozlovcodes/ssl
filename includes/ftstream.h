@@ -6,13 +6,14 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 05:28:45 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 11:00:16 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 12:06:28 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FTSTREAM_H
 # define FTSTREAM_H
 
+# include "bool.h"
 # include "dstring.h"
 
 # include <stddef.h>
