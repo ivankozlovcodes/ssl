@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 10:55:26 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 12:33:20 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,6 @@
 #include "memory.h"
 #include "numbers.h"
 #include "ft_printf.h"
-
-/*
-void	md5_stdin(void)
-{
-	t_md5			md5;
-
-	md5.d = g_printed_stdin ? md5_init_digest_empty_string() : init_digest();
-	md5.message = ssl_get_toggle_flag(FLAG_P, 0)
-		? string_init(MD5_CHUNK_SIZE) : NULL;
-	md5_fd(0 - g_printed_stdin, &md5);
-	md5_print_result(NULL, md5);
-	if (md5.message)
-		string_destroy(md5.message, FALSE);
-	g_printed_stdin = 1;
-}
-*/
 
 void	md5_hash(unsigned char *chunk, t_md5_digest *digest)
 {
@@ -71,18 +55,14 @@ int		md5_process_chunk(t_chunk *chunk, t_md5_digest *d, size_t *total)
 		last = chunk->size < 56;
 		if (last)
 			padd_chunk(chunk, *total);
-		// print_chunk(*chunk);
 	}
-	// ft_printf("%.8x %.8x %.8x %.8x\n", d->a, d->b, d->c, d->d);
 	md5_hash(chunk->msg, d);
-	// ft_printf("%.8x %.8x %.8x %.8x\n", d->a, d->b, d->c, d->d);
 	return (last);
 }
 
 t_digest	md5(t_stream stream, t_print_digest *cb)
 {
 	t_digest	d;
-	t_md5		md5;
 	int			last;
 	size_t		total;
 	t_chunk		*chunk;
@@ -96,9 +76,11 @@ t_digest	md5(t_stream stream, t_print_digest *cb)
 	{
 		chunk = get_chunk_stream(stream, MD5_CHUNK_SIZE);
 		last = md5_process_chunk(chunk, (t_md5_digest *)d.words, &total);
-		// free chunk
+		ft_free(2, chunk->msg, chunk);
 	}
 	if (cb)
 		(*cb)(d, stream);
+	// free(d.words);
+	DOIFTRUE(stream.content, string_destroy(stream.content, FALSE));
 	return (d);
 }
