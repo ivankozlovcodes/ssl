@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 16:37:18 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 10:55:26 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,23 @@
 #include "numbers.h"
 #include "ft_printf.h"
 
-void	md5(unsigned char *chunk, t_md5_digest *digest)
+/*
+void	md5_stdin(void)
+{
+	t_md5			md5;
+
+	md5.d = g_printed_stdin ? md5_init_digest_empty_string() : init_digest();
+	md5.message = ssl_get_toggle_flag(FLAG_P, 0)
+		? string_init(MD5_CHUNK_SIZE) : NULL;
+	md5_fd(0 - g_printed_stdin, &md5);
+	md5_print_result(NULL, md5);
+	if (md5.message)
+		string_destroy(md5.message, FALSE);
+	g_printed_stdin = 1;
+}
+*/
+
+void	md5_hash(unsigned char *chunk, t_md5_digest *digest)
 {
 	int					i;
 	unsigned int		g;
@@ -54,51 +70,35 @@ int		md5_process_chunk(t_chunk *chunk, t_md5_digest *d, size_t *total)
 		SET_CHUNK_BIT(chunk);
 		last = chunk->size < 56;
 		if (last)
-			md5_padd_chunk(chunk, *total);
+			padd_chunk(chunk, *total);
+		// print_chunk(*chunk);
 	}
-	md5(chunk->msg, d);
+	// ft_printf("%.8x %.8x %.8x %.8x\n", d->a, d->b, d->c, d->d);
+	md5_hash(chunk->msg, d);
+	// ft_printf("%.8x %.8x %.8x %.8x\n", d->a, d->b, d->c, d->d);
 	return (last);
 }
 
-void	md5_print_result(const char *filename, t_md5 md5)
+t_digest	md5(t_stream stream, t_print_digest *cb)
 {
-	char			*quote;
-	unsigned int	*digest;
+	t_digest	d;
+	t_md5		md5;
+	int			last;
+	size_t		total;
+	t_chunk		*chunk;
 
-	quote = ssl_get_toggle_flag(FLAG_S, 0) ? "\"" : "";
-	if (filename && !ssl_get_toggle_flag(FLAG_Q | FLAG_R, 0))
-		ft_printf("MD5 (%s%s%s) = ", quote, filename, quote);
-	if (ssl_get_toggle_flag(FLAG_P, 0) && md5.message)
-		ft_printf("%s", md5.message->content);
-	digest = digest_to_array(md5.d);
-	ft_printf("%.8x%.8x%.8x%.8x", digest[0], digest[1], digest[2], digest[3]);
-	if (filename && ssl_get_toggle_flag(FLAG_R, 0)
-		&& !ssl_get_toggle_flag(FLAG_Q, 0))
-		ft_printf(" %s%s%s", quote, filename, quote);
-	ft_printf("\n");
-}
-
-void	md5_main(int ac, char *av[])
-{
-	int				i;
-	char			*flag_leftover;
-
-	i = -1;
-	while (++i < ac)
+	last = 0;
+	total = 0;
+	if (stream.fd < 0 && !stream.string)
+		return (d);
+	d = md5_init_digest();
+	while (!last)
 	{
-		if (av[i][0] == '-' && !g_printed_file)
-		{
-			flag_leftover = ssl_parse_flag(av[i]);
-			ssl_get_toggle_flag(FLAG_P, 0) ? md5_stdin() : (void)0;
-			*flag_leftover && !ssl_get_toggle_flag(0, FLAG_S)
-				? md5_string(flag_leftover) : (void)0;
-			UNSET_FLAG(FLAG_P);
-			continue ;
-		}
-		ssl_get_toggle_flag(FLAG_S, 0) ? md5_string(av[i]) : md5_file(av[i]);
-		UNSET_FLAG(FLAG_S);
+		chunk = get_chunk_stream(stream, MD5_CHUNK_SIZE);
+		last = md5_process_chunk(chunk, (t_md5_digest *)d.words, &total);
+		// free chunk
 	}
-	if (!g_printed_file && !g_printed_string && !g_printed_stdin)
-		ssl_get_toggle_flag(FLAG_S, 0) ? error_handler(ERR_NO_ARG, 1, "s")
-			: md5_stdin();
+	if (cb)
+		(*cb)(d, stream);
+	return (d);
 }

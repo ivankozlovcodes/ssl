@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 17:40:22 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 11:12:35 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,61 +15,56 @@
 #include "ftstring.h"
 #include "ft_printf.h"
 
+#include "memory.h"
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 char			*g_hash_func_name = NULL;
 
-unsigned int g_s[64] = {
-	7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
-	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
-	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
-	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
-};
-
-unsigned int g_k[64] = {
-	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
-	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
-	0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
-	0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
-	0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
-	0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
-	0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
-	0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
-	0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
-	0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
-	0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
-	0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
-	0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
-	0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
-	0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
-	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
-};
-
-const t_md5_step_helper g_md5_step_dispatch_table[] = {
-	md5_first_step, md5_second_step, md5_third_step, md5_forth_step
-};
-
-void	print_chunk(unsigned char *chunk)
-{
-	for (int i = 0; i < 64; i++)
-	{
-		printf("%.2x%c", chunk[i], (i + 1) % 8 == 0 ? ' ' : 0);
-	}
-	printf("\n");
-}
-
-t_hash_main		*get_hash_func(char *name)
+t_hash_func		*get_hash_func(char *name)
 {
 	int							idx;
-	static char const			*lookup[ALG_NUM] = { "md5" };
-	static t_hash_main	funcs[] = { &md5_main };
+	static char const			*lookup[ALG_NUM + 1] = { "md5", NULL };
+	static t_hash_func			funcs[] = { &md5 };
 
 	g_hash_func_name = name;
 	idx = ft_straridx(name, (char **)lookup);
 	return (idx == -1 ? NULL : &funcs[idx]);
 }
 
-int		main(int ac, char *av[])
+void			hash_main(int ac, char *av[], t_hash_func func)
 {
-	t_hash_main		*func;
+	int								i;
+	char							*flag_leftover;
+	static t_print_digest			cb = ssl_print_digest;
+
+	i = -1;
+	while (++i < ac)
+	{
+		if (av[i][0] == '-' && !g_printed_file)
+		{
+			flag_leftover = ssl_parse_flag(av[i]);
+			if (ssl_get_toggle_flag(FLAG_P, 0))
+				func(build_stream_fd(NULL), &cb);
+			if (*flag_leftover && ssl_get_toggle_flag(FLAG_S, 0)
+				&& !ssl_get_toggle_flag(0, FLAG_S))
+				func(build_stream_string(flag_leftover), &cb);
+			UNSET_FLAG(FLAG_P);
+			continue ;
+		}
+		ssl_get_toggle_flag(FLAG_S, 0) ? func(build_stream_string(av[i]), &cb)
+			: func(build_stream_fd(av[i]), &cb);
+		UNSET_FLAG(FLAG_S);
+	}
+	if (!g_printed_file && !g_printed_string && !g_printed_stdin)
+		ssl_get_toggle_flag(FLAG_S, 0) ? error_handler(ERR_NO_ARG, 1, "s")
+			: func(build_stream_fd(NULL), &cb);
+}
+
+int				main(int ac, char *av[])
+{
+	t_hash_func		*func;
 	char			*algorithm;
 
 	if (ac < 2)
@@ -84,7 +79,6 @@ int		main(int ac, char *av[])
 		ft_printf("Error: %s is invalid command.\n", algorithm);
 		return (-1);
 	}
-	(*func)(ac - 2, av + 2);
-
+	hash_main(ac - 2, av + 2, *func);
 	return (0);
 }
