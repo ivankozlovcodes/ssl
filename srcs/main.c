@@ -6,12 +6,11 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 11:12:35 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 12:37:22 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
-#include "ft_md5.h"
 #include "ftstring.h"
 #include "ft_printf.h"
 
@@ -57,9 +56,9 @@ void			hash_main(int ac, char *av[], t_hash_func func)
 			: func(build_stream_fd(av[i]), &cb);
 		UNSET_FLAG(FLAG_S);
 	}
+	DOIFTRUE(ssl_get_toggle_flag(FLAG_S, 0), error_handler(ERR_NO_ARG, 1, "s"));
 	if (!g_printed_file && !g_printed_string && !g_printed_stdin)
-		ssl_get_toggle_flag(FLAG_S, 0) ? error_handler(ERR_NO_ARG, 1, "s")
-			: func(build_stream_fd(NULL), &cb);
+		func(build_stream_fd(NULL), &cb);
 }
 
 int				main(int ac, char *av[])

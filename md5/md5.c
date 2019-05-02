@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 12:33:20 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 12:38:18 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "numbers.h"
 #include "ft_printf.h"
 
-void	md5_hash(unsigned char *chunk, t_md5_digest *digest)
+void		md5_hash(unsigned char *chunk, t_md5_digest *digest)
 {
 	int					i;
 	unsigned int		g;
@@ -43,7 +43,7 @@ void	md5_hash(unsigned char *chunk, t_md5_digest *digest)
 	digest->d += tmp.d;
 }
 
-int		md5_process_chunk(t_chunk *chunk, t_md5_digest *d, size_t *total)
+int			md5_process_chunk(t_chunk *chunk, t_md5_digest *d, size_t *total)
 {
 	int			last;
 
@@ -80,7 +80,6 @@ t_digest	md5(t_stream stream, t_print_digest *cb)
 	}
 	if (cb)
 		(*cb)(d, stream);
-	// free(d.words);
 	DOIFTRUE(stream.content, string_destroy(stream.content, FALSE));
 	return (d);
 }

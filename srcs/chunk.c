@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 05:28:31 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 12:32:33 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 12:37:47 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,6 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-
-void			print_chunk(t_chunk chunk)
-{
-	int		i;
-
-	for (size_t i = 0; i < 64; i++)
-	{
-		ft_printf("%.2x%s", chunk.msg[i], i % 8 == 7 ? " " : "");
-	}
-	ft_printf("\n");
-}
 
 void			padd_chunk(t_chunk *chunk, size_t total)
 {
@@ -46,7 +35,7 @@ t_chunk			*init_chunk(size_t size)
 	return (ret);
 }
 
-t_chunk		*get_chunk(int fd, size_t chunk_size)
+t_chunk			*get_chunk(int fd, size_t chunk_size)
 {
 	ssize_t			read;
 	t_chunk			*ret;
@@ -62,7 +51,7 @@ t_chunk		*get_chunk(int fd, size_t chunk_size)
 	return (ret);
 }
 
-t_chunk		*get_chunk_stream(t_stream stream, size_t chunk_size)
+t_chunk			*get_chunk_stream(t_stream stream, size_t chunk_size)
 {
 	t_chunk		*chunk;
 
@@ -75,7 +64,7 @@ t_chunk		*get_chunk_stream(t_stream stream, size_t chunk_size)
 	return (chunk);
 }
 
-t_chunk		*get_chunk_string(t_stream stream, size_t chunk_size)
+t_chunk			*get_chunk_string(t_stream stream, size_t chunk_size)
 {
 	t_chunk			*chunk;
 

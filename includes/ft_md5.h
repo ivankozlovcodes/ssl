@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 08:16:00 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/04/29 11:38: by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 12:38:45 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,5 @@ void							md5_hash(unsigned char *chunk,
 	t_md5_digest *digest);
 int								md5_rocess_chunk(t_chunk *chunk,
 	t_md5_digest *d, size_t *total);
-
 
 #endif
