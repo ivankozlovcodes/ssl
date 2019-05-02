@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 05:28:31 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 11:15:44 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/02 12:32:33 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_chunk		*get_chunk_string(t_stream stream, size_t chunk_size)
 	chunk = init_chunk(chunk_size);
 	if (stream.pos <= stream.size)
 	{
-		chunk->msg = ft_memdup(stream.string + stream.pos, chunk_size);
+		ft_memcpy(chunk->msg, stream.string + stream.pos, chunk_size);
 		stream.pos += chunk_size;
 		chunk->size = stream.pos > stream.size
 			? stream.size % chunk_size : chunk_size;
