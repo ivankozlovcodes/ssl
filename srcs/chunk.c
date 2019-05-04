@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 05:28:31 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 12:37:47 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 05:29:38 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,60 @@
 #include "structs.h"
 #include "ftstream.h"
 
-#include "ft_printf.h"
 #include "memory.h"
+#include "ft_printf.h"
 
 #include <stdlib.h>
 #include <unistd.h>
 
-void			padd_chunk(t_chunk *chunk, size_t total)
-{
-	total = total * 8;
-	ft_memcpy((chunk->msg + 56), &total, sizeof(size_t));
-}
-
-t_chunk			*init_chunk(size_t size)
+static t_chunk			*init_chunk(size_t size)
 {
 	t_chunk		*ret;
 
 	ret = malloc(sizeof(t_chunk));
 	ret->msg = malloc(size);
+	ft_bzero(ret->msg, size);
+	ret->max_size = size;
 	return (ret);
 }
 
-t_chunk			*get_chunk(int fd, size_t chunk_size)
+static t_chunk			*get_chunk(int fd, size_t chunk_size)
 {
-	ssize_t			read;
-	t_chunk			*ret;
+	size_t			ret;
+	t_chunk			*chunk;
 
-	ret = init_chunk(chunk_size);
-	read = read_chunk(fd, chunk_size, (void **)&ret->msg);
-	ret->size = read;
-	if (read < 0)
+	chunk = init_chunk(chunk_size);
+	ret = read(fd, chunk->msg, chunk->max_size);
+	chunk->size = ret;
+	if (ret < 0)
 	{
-		ft_free(2, ret->msg, ret);
+		ft_free(2, chunk->msg, chunk);
 		return (NULL);
 	}
-	return (ret);
+	return (chunk);
 }
 
-t_chunk			*get_chunk_stream(t_stream stream, size_t chunk_size)
+int						prepare_chunk(t_chunk *chunk, size_t *total)
+{
+	int			last;
+	size_t		bits_total;
+
+	last = 0;
+	*total = *total + chunk->size;
+	bits_total = *total * 8;
+	if (chunk->size < chunk->max_size)
+	{
+		SET_CHUNK_BIT(chunk);
+		last = chunk->size < chunk->max_size - 8;
+		if (last)
+			ft_memcpy((chunk->msg + chunk->max_size - 8),
+				&bits_total, sizeof(size_t));
+	}
+	return (last);
+}
+
+t_chunk					*get_chunk_stream(t_stream stream,
+	size_t chunk_size)
 {
 	t_chunk		*chunk;
 
@@ -64,7 +80,8 @@ t_chunk			*get_chunk_stream(t_stream stream, size_t chunk_size)
 	return (chunk);
 }
 
-t_chunk			*get_chunk_string(t_stream stream, size_t chunk_size)
+t_chunk					*get_chunk_string(t_stream stream,
+	size_t chunk_size)
 {
 	t_chunk			*chunk;
 
