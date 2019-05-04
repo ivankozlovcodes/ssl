@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 13:44:51 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 13:50:18 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void			hash_main(int ac, char *av[], t_ssl_main m)
 	i = -1;
 	while (++i < ac)
 	{
-		if (av[i][0] == '-' && !g_printed_file)
+		if (av[i][0] == '-' && av[i][1] && !g_printed_file)
 		{
 			flag_leftover = ssl_parse_flag(av[i]);
 			if (ssl_get_toggle_flag(FLAG_P, 0))
