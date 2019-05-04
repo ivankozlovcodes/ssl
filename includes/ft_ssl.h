@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 12:12:12 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 13:23:21 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define ALG_NUM 2
 # define PREFIX "ft_ssl:"
 # define USAGE "usage: ft_ssl command [command opts] [command args]"
-# define COMMANDS_MSG "Avaliable commands are:\nmd5"
+# define COMMANDS_MSG "Avaliable commands are:\n\tmd5\n\tsha256\n"
 
 # define END_BIT 0x80
 # define MESSAGE_LEN_BYTES 8

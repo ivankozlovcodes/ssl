@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 19:49:22 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:55:31 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 13:24:58 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 void		error_handler(t_err errcode, int should_exit, const char *info)
 {
-	if (errcode != ERR_NO_COMMAND)
+	if (errcode != ERR_INVALID_COMMAND && errcode != ERR_NO_COMMAND)
 		ft_printf("%s %s: ", PREFIX, g_hash_func_name);
 	if (errcode == ERR_FILE_NOT_FOUND)
 		ft_printf("%s: No such file or directory\n", info);
