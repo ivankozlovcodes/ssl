@@ -6,7 +6,7 @@
 #    By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/08 21:31:12 by ikozlov           #+#    #+#              #
-#    Updated: 2019/04/27 22:20:08 by ivankozlov       ###   ########.fr        #
+#    Updated: 2019/05/04 06:06:34 by ivankozlov       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,13 @@ MD5 = $(addprefix $(MD5_DIR), $(MD5_FILES))
 MD5_OBJFILES = $(MD5_FILES:%.c=%.o)
 MD5_OBJ = $(addprefix $(OBJ_DIR)$(MD5_DIR), $(MD5_OBJFILES))
 
+# sha256
+SHA256_DIR = sha256/
+SHA256_FILES = $(notdir $(wildcard $(SHA256_DIR)*.c))
+SHA256 = $(addprefix $(SHA256_DIR), $(SHA256_FILES))
+SHA256_OBJFILES = $(SHA256_FILES:%.c=%.o)
+SHA256_OBJ = $(addprefix $(OBJ_DIR)$(SHA256_DIR), $(SHA256_OBJFILES))
+
 # files
 SRC_FILES = $(notdir $(wildcard $(SRC_DIR)*.c))
 OBJ_FILES = $(SRC_FILES:%.c=%.o)
@@ -43,6 +50,7 @@ OBJ_FILES = $(SRC_FILES:%.c=%.o)
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 OBJ += $(MD5_OBJ)
+OBJ += $(SHA256_OBJ)
 
 # libraries
 LIBFT = $(LIBFT_DIR)libft.a
@@ -66,6 +74,10 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)
 
 $(OBJ_DIR)md5/%.o: $(MD5_DIR)%.c
 	@mkdir -p $(OBJ_DIR)$(MD5_DIR)
+	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR)sha256/%.o: $(SHA256_DIR)%.c
+	@mkdir -p $(OBJ_DIR)$(SHA256_DIR)
 	$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
