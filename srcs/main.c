@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:52:28 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 10:51:38 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char			*g_hash_func_name = NULL;
 void			init_ssl_main(char *algorithm, t_ssl_main *main)
 {
 	int							idx;
-	static size_t				sizes[ALG_NUM] = { 64 };
-	static t_hash_chunk			hash_funcs[] = { &md5 };
-	static t_init_digest		digest_funcs[] = { &md5_init_digest };
-	static char const			*lookup[ALG_NUM + 1] = { "md5", NULL };
+	static size_t				sizes[ALG_NUM] = { 64, 64 };
+	static t_hash_chunk			hash_funcs[] = { &md5, &sha256 };
+	static t_init_digest		digest_funcs[] = { &md5_init_digest, &sha256_init_digest };
+	static char const			*lookup[ALG_NUM + 1] = { "md5", "sha256", NULL };
 
 	g_hash_func_name = algorithm;
 	idx = ft_straridx(algorithm, (char **)lookup);

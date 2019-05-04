@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:53:00 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 06:57:05 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_SSL_H
 
 # include "ft_md5.h"
+# include "ft_sha256.h"
 
 # include <stddef.h>
 # include <sys/types.h>
@@ -21,7 +22,7 @@
 # include "structs.h"
 # include "ftstream.h"
 
-# define ALG_NUM 1
+# define ALG_NUM 2
 # define PREFIX "ft_ssl:"
 # define USAGE "usage: ft_ssl command [command opts] [command args]"
 # define COMMANDS_MSG "Avaliable commands are:\nmd5"
