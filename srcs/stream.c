@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 10:32:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 15:06:36 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 15:14:37 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_stream			stream_fd(char *filename)
 	s.content = s.fd == 0 ? string_init(0x4000) : NULL;
 	if (s.fd < 0)
 		error_handler(ERR_FILE_NOT_FOUND, 0, filename);
-	if ((fstat(s.fd, &stat)) == -1)
+	if (s.fd >= 0 && (fstat(s.fd, &stat)) == -1)
 		error_handler(-1, 1, NULL);
 	if (S_ISDIR(stat.st_mode))
 	{
