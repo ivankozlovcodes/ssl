@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 05:20:21 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 12:05:46 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 15:00:39 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,4 @@ void					print_chunk(t_chunk chunk)
 	while (++i < chunk.max_size)
 		ft_printf("%.2x%s", chunk.msg[i], i % 8 == 7 ? " " : "");
 	ft_printf("\n");
-}
-
-unsigned int			*digest_to_array(t_digest digest)
-{
-	size_t			i;
-	unsigned int	*ret;
-
-	i = -1;
-	while (++i < digest.size)
-		ret[i] = digest.words[i];
-	return (ret);
 }
