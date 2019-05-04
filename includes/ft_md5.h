@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 08:16:00 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:47:58 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 06:28:25 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stddef.h>
 
-# include "ft_ssl.h"
 # include "structs.h"
 # include "ftstream.h"
 

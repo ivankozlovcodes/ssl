@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5[2]                                              :+:      :+:    :+:   */
+/*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:36:15 by ivankozlov       ###   ########.fr       */
+/*   Created: 2019/05/04 06:04:36 by ivankozlov        #+#    #+#             */
+/*   Updated: 2019/05/04 06:07:11 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ssl.h"
 #include "ft_md5.h"
 
 #include "memory.h"
 #include "numbers.h"
-#include "ft_printf.h"
 
 void		md5(unsigned char *chunk, t_digest digest)
 {
