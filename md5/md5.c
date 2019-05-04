@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 06:04:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 06:07:11 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 10:59:20 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 
 #include "memory.h"
 #include "numbers.h"
+
+t_digest	md5_init_digest(void)
+{
+	static const unsigned int	defaults[] = { 0x67452301, 0xefcdab89,
+		0x98badcfe, 0x10325476 };
+	t_digest					digest;
+
+	digest.size = 4;
+	digest.words = ft_memdup(defaults, sizeof(unsigned int) * 4);
+	return (digest);
+}
 
 void		md5(unsigned char *chunk, t_digest digest)
 {
