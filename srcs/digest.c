@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:33:55 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 13:32:19 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 15:01:28 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 void			ssl_print_digest(t_ssl_main main,
 	t_digest d, t_stream s)
 {
-	size_t			i;
+	int				i;
 	char			*quote;
 	char			*input_name;
 

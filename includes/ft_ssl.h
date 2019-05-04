@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 14:48:51 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 15:06:01 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ enum	e_err
 typedef enum e_err				t_err;
 
 extern char						*g_hash_func_name;
+extern t_digest					g_error_digest;
 
 void							error_handler(t_err errcode,
 	int exit, const char *info);

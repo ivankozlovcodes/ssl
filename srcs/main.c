@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 13:50:18 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 15:06:25 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <unistd.h>
 
 char			*g_hash_func_name = NULL;
+t_digest		g_error_digest = {0, 0};
 
 void			init_ssl_main(char *algorithm, t_ssl_main *main)
 {

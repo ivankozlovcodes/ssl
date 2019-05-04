@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 06:04:17 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 10:50:54 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 15:06:54 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ void			update_tmp_digest(unsigned int *tmp, unsigned int help[])
 
 void			sha256(unsigned char *chunk, t_digest digest)
 {
-	int				i;
-	int				j;
+	size_t			i;
 	unsigned int	*w;
 	unsigned int	*tmp;
 	unsigned int	help[6];

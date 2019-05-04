@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 10:32:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 14:58:34 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 15:06:36 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_digest			hash_stream(t_stream stream,
 	last = 0;
 	total = 0;
 	if (stream.fd < 0 && !stream.string)
-		return (d);
+		return (g_error_digest);
 	d = main.init_digest();
 	while (!last)
 	{
