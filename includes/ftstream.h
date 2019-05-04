@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 05:28:45 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 12:06:28 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 03:31:15 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ struct							s_stream
 };
 typedef struct s_stream			t_stream;
 
-t_stream						build_stream_fd(char *filename);
-t_stream						build_stream_string(char *string);
+t_stream						stream_fd(char *filename);
+t_stream						stream_str(char *string);
 
 #endif
