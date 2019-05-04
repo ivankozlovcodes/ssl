@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/04 06:11:23 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 10:54:12 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 13:27:35 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ extern unsigned int				g_sha256_k[64];
 
 t_digest	sha256_init_digest(void);
 void		sha256(unsigned char *chunk, t_digest digest);
+
+
+t_digest	sha224_init_digest(void);
 
 /*
 **	Stands for AlphabetIndex.

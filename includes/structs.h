@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 22:03:06 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 12:15:48 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 13:34:08 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ struct							s_algorithm_info
 {
 	int							chunk_size;
 	int							big_endian;
+	int							output_size;
 	char						*name;
 };
 typedef struct s_algorithm_info	t_algorithm_info;

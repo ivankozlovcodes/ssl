@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:33:55 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 12:05:23 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 13:32:19 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void			ssl_print_digest(t_ssl_main main,
 	if (ssl_get_toggle_flag(FLAG_P, 0) && s.content)
 		ft_printf("%s", s.content->content);
 	i = -1;
-	while (++i < d.size)
+	while (++i < main.info.output_size)
 		ft_printf("%.8x", main.info.big_endian
 			? d.words[i] : to_little_endian(d.words[i]));
 	if (input_name && ssl_get_toggle_flag(FLAG_R, 0)

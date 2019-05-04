@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 12:06:17 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 13:34:50 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ void			init_ssl_main(char *algorithm, t_ssl_main *main)
 {
 	int							idx;
 	char						*upper;
-	static t_hash_chunk			hash_funcs[] = { &md5, &sha256 };
+	static t_hash_chunk			hash_funcs[] = { &md5, &sha256, sha256 };
 	static t_init_digest		digest_funcs[] = { &md5_init_digest,
-		&sha256_init_digest };
+		&sha256_init_digest, &sha224_init_digest };
 	static t_algorithm_info		alg_info[ALG_NUM + 1] = {
-		{ 64, 0, "MD5" }, { 64, 1, "SHA256" }
+		{ 64, 0, 4, "MD5" }, { 64, 1, 8, "SHA256" },
+		{ 64, 1, 7, "SHA224" }
 	};
 
 	idx = -1;
