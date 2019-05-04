@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 19:49:22 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 13:24:58 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 14:52:13 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void		error_handler(t_err errcode, int should_exit, const char *info)
 		ft_printf("Error: %s is invalid command.\n%s", info, COMMANDS_MSG);
 	else if (errcode == ERR_NO_COMMAND)
 		ft_printf("%s\n", USAGE);
+	else if (errcode == ERR_GOT_DIR)
+		ft_printf("%s: Is a directory\n", info);
 	else
 		ft_printf(
 	"Something terrible happened. Please, reconsider your actions\n");

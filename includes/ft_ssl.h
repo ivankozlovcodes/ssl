@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 14:38:30 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 14:48:51 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ extern int						g_printed_string;
 enum	e_err
 {
 	ERR_NO_ARG,
+	ERR_GOT_DIR,
 	ERR_READ_FILE,
 	ERR_NO_COMMAND,
 	ERR_ILLEGAL_OPTION,

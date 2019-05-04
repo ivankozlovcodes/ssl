@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 10:32:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 14:37:48 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 14:58:34 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "ftstring.h"
 
 #include <fcntl.h>
+#include <sys/stat.h>
 
 int					g_printed_file = 0;
 int					g_printed_stdin = 0;
@@ -26,6 +27,7 @@ int					g_printed_string = 0;
 t_stream			stream_fd(char *filename)
 {
 	t_stream		s;
+	struct stat		stat;
 
 	s.fd = filename ? open(filename, O_RDONLY) : 0;
 	s.string = NULL;
@@ -33,6 +35,13 @@ t_stream			stream_fd(char *filename)
 	s.content = s.fd == 0 ? string_init(0x4000) : NULL;
 	if (s.fd < 0)
 		error_handler(ERR_FILE_NOT_FOUND, 0, filename);
+	if ((fstat(s.fd, &stat)) == -1)
+		error_handler(-1, 1, NULL);
+	if (S_ISDIR(stat.st_mode))
+	{
+		error_handler(ERR_GOT_DIR, 0, filename);
+		s.fd = -1;
+	}
 	g_printed_file = g_printed_file || filename;
 	g_printed_stdin = g_printed_file || !filename;
 	return (s);
