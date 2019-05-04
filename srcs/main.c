@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 12:37:22 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 05:52:28 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,24 @@
 
 char			*g_hash_func_name = NULL;
 
-t_hash_func		*get_hash_func(char *name)
+void			init_ssl_main(char *algorithm, t_ssl_main *main)
 {
 	int							idx;
+	static size_t				sizes[ALG_NUM] = { 64 };
+	static t_hash_chunk			hash_funcs[] = { &md5 };
+	static t_init_digest		digest_funcs[] = { &md5_init_digest };
 	static char const			*lookup[ALG_NUM + 1] = { "md5", NULL };
-	static t_hash_func			funcs[] = { &md5 };
 
-	g_hash_func_name = name;
-	idx = ft_straridx(name, (char **)lookup);
-	return (idx == -1 ? NULL : &funcs[idx]);
+	g_hash_func_name = algorithm;
+	idx = ft_straridx(algorithm, (char **)lookup);
+	if (idx == -1)
+		error_handler(ERR_INVALID_COMMAND, 1, algorithm);
+	main->chunk_size = sizes[idx];
+	main->hash = hash_funcs[idx];
+	main->init_digest = digest_funcs[idx];
 }
 
-void			hash_main(int ac, char *av[], t_hash_func func)
+void			hash_main(int ac, char *av[], t_ssl_main m)
 {
 	int								i;
 	char							*flag_leftover;
@@ -45,39 +51,31 @@ void			hash_main(int ac, char *av[], t_hash_func func)
 		{
 			flag_leftover = ssl_parse_flag(av[i]);
 			if (ssl_get_toggle_flag(FLAG_P, 0))
-				func(build_stream_fd(NULL), &cb);
+				hash_stream(stream_fd(NULL), m, &cb);
 			if (*flag_leftover && ssl_get_toggle_flag(FLAG_S, 0)
 				&& !ssl_get_toggle_flag(0, FLAG_S))
-				func(build_stream_string(flag_leftover), &cb);
+				hash_stream(stream_str(flag_leftover), m, &cb);
 			UNSET_FLAG(FLAG_P);
 			continue ;
 		}
-		ssl_get_toggle_flag(FLAG_S, 0) ? func(build_stream_string(av[i]), &cb)
-			: func(build_stream_fd(av[i]), &cb);
+		ssl_get_toggle_flag(FLAG_S, 0) ? hash_stream(stream_str(av[i]), m, &cb)
+			: hash_stream(stream_fd(av[i]), m, &cb);
 		UNSET_FLAG(FLAG_S);
 	}
 	DOIFTRUE(ssl_get_toggle_flag(FLAG_S, 0), error_handler(ERR_NO_ARG, 1, "s"));
 	if (!g_printed_file && !g_printed_string && !g_printed_stdin)
-		func(build_stream_fd(NULL), &cb);
+		hash_stream(stream_fd(NULL), m, &cb);
 }
 
 int				main(int ac, char *av[])
 {
-	t_hash_func		*func;
+	t_ssl_main		main;
 	char			*algorithm;
 
 	if (ac < 2)
-	{
-		ft_printf("%s\n", USAGE);
-		return (-1);
-	}
+		error_handler(ERR_NO_COMMAND, 1, NULL);
 	algorithm = av[1];
-	func = get_hash_func(algorithm);
-	if (!func)
-	{
-		ft_printf("Error: %s is invalid command.\n", algorithm);
-		return (-1);
-	}
-	hash_main(ac - 2, av + 2, *func);
+	init_ssl_main(algorithm, &main);
+	hash_main(ac - 2, av + 2, main);
 	return (0);
 }

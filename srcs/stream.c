@@ -6,13 +6,15 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 10:32:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 11:08:55 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 05:18:58 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
+#include "structs.h"
 #include "ftstream.h"
 
+#include "memory.h"
 #include "ftstring.h"
 
 #include <fcntl.h>
@@ -21,7 +23,7 @@ int					g_printed_file = 0;
 int					g_printed_stdin = 0;
 int					g_printed_string = 0;
 
-t_stream			build_stream_fd(char *filename)
+t_stream			stream_fd(char *filename)
 {
 	t_stream		s;
 
@@ -36,7 +38,7 @@ t_stream			build_stream_fd(char *filename)
 	return (s);
 }
 
-t_stream			build_stream_string(char *string)
+t_stream			stream_str(char *string)
 {
 	t_stream		s;
 
@@ -47,4 +49,30 @@ t_stream			build_stream_string(char *string)
 	s.size = ft_strlen(string);
 	g_printed_string = 1;
 	return (s);
+}
+
+t_digest			hash_stream(t_stream stream,
+	t_ssl_main main, t_print_digest *cb)
+{
+	t_digest	d;
+	int			last;
+	size_t		total;
+	t_chunk		*chunk;
+
+	last = 0;
+	total = 0;
+	if (stream.fd < 0 && !stream.string)
+		return (d);
+	d = main.init_digest();
+	while (!last)
+	{
+		chunk = get_chunk_stream(stream, main.chunk_size);
+		last = prepare_chunk(chunk, &total);
+		main.hash(chunk->msg, d);
+		ft_free(2, chunk->msg, chunk);
+	}
+	if (cb)
+		(*cb)(d, stream);
+	DOIFTRUE(stream.content, string_destroy(stream.content, FALSE));
+	return (d);
 }

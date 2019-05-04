@@ -6,15 +6,28 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 11:33:55 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 11:14:35 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 05:44:23 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
 
 #include "ft_ssl.h"
 
 #include "memory.h"
 #include "numbers.h"
 #include "ft_printf.h"
+
+unsigned int	*digest_to_array(t_digest digest)
+{
+	size_t			i;
+	unsigned int	*ret;
+
+	i = -1;
+	while (++i < digest.size)
+		ret[i] = digest.words[i];
+	return (ret);
+}
 
 t_digest		md5_init_digest(void)
 {

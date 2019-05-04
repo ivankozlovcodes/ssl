@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5.c                                              :+:      :+:    :+:   */
+/*   md5[2]                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 21:06:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/02 12:38:18 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 05:36:15 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,69 +17,29 @@
 #include "numbers.h"
 #include "ft_printf.h"
 
-void		md5_hash(unsigned char *chunk, t_md5_digest *digest)
+void		md5(unsigned char *chunk, t_digest digest)
 {
 	int					i;
 	unsigned int		g;
 	unsigned int		f;
 	unsigned int		*m;
-	t_md5_digest		tmp;
+	unsigned int		*tmp;
 
 	i = -1;
-	tmp = *digest;
+	tmp = ft_memdup(digest.words, sizeof(unsigned int) * digest.size);
 	m = (unsigned int *)chunk;
 	while (++i < 64)
 	{
 		(GET_STEP_FUNC(i))(tmp, &f, &g, i);
-		f += tmp.a + g_k[i] + m[g];
-		tmp.a = tmp.d;
-		tmp.d = tmp.c;
-		tmp.c = tmp.b;
-		tmp.b += left_rotate(f, g_s[i]);
+		f += tmp[0] + g_k[i] + m[g];
+		tmp[0] = tmp[3];
+		tmp[3] = tmp[2];
+		tmp[2] = tmp[1];
+		tmp[1] += left_rotate(f, g_s[i]);
 	}
-	digest->a += tmp.a;
-	digest->b += tmp.b;
-	digest->c += tmp.c;
-	digest->d += tmp.d;
-}
-
-int			md5_process_chunk(t_chunk *chunk, t_md5_digest *d, size_t *total)
-{
-	int			last;
-
-	last = 0;
-	*total = *total + chunk->size;
-	if (chunk->size < MD5_CHUNK_SIZE)
-	{
-		SET_CHUNK_BIT(chunk);
-		last = chunk->size < 56;
-		if (last)
-			padd_chunk(chunk, *total);
-	}
-	md5_hash(chunk->msg, d);
-	return (last);
-}
-
-t_digest	md5(t_stream stream, t_print_digest *cb)
-{
-	t_digest	d;
-	int			last;
-	size_t		total;
-	t_chunk		*chunk;
-
-	last = 0;
-	total = 0;
-	if (stream.fd < 0 && !stream.string)
-		return (d);
-	d = md5_init_digest();
-	while (!last)
-	{
-		chunk = get_chunk_stream(stream, MD5_CHUNK_SIZE);
-		last = md5_process_chunk(chunk, (t_md5_digest *)d.words, &total);
-		ft_free(2, chunk->msg, chunk);
-	}
-	if (cb)
-		(*cb)(d, stream);
-	DOIFTRUE(stream.content, string_destroy(stream.content, FALSE));
-	return (d);
+	digest.words[0] += tmp[0];
+	digest.words[1] += tmp[1];
+	digest.words[2] += tmp[2];
+	digest.words[3] += tmp[3];
+	ft_free(1, tmp);
 }
