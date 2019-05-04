@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 05:28:31 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 12:09:32 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 14:35:11 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,18 @@ static t_chunk			*get_chunk(int fd, size_t chunk_size)
 }
 
 int						prepare_chunk(t_chunk *chunk,
-	size_t total, int is_big_endian)
+	size_t total, int *eos, int is_big_endian)
 {
-	int			last;
+	int		last;
 
 	last = 0;
 	if (chunk->size < chunk->max_size)
 	{
-		SET_CHUNK_BIT(chunk);
-		last = chunk->size < chunk->max_size - 8;
+		*eos += chunk->size < chunk->max_size;
+		last = chunk->size <= chunk->max_size - 8;
 		total = is_big_endian ? to_le_64(total * 8) : total * 8;
+		if (*eos == 1)
+			SET_CHUNK_BIT(chunk);
 		if (last)
 			ft_memcpy((chunk->msg + chunk->max_size - 8),
 				&total, sizeof(size_t));

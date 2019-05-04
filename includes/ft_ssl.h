@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 13:45:03 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 14:38:30 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int								ssl_get_toggle_flag(int get, int toggle);
 t_chunk							*get_chunk_string(t_stream stream, size_t size);
 t_chunk							*get_chunk_stream(t_stream stream, size_t size);
 int								prepare_chunk(t_chunk *chunk,
-	size_t total, int is_big_endian);
+	size_t total, int *eos, int is_big_endian);
 
 typedef void					(*t_print_digest)(t_ssl_main,
 	t_digest, t_stream);

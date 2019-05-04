@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 10:32:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 11:55:54 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 14:37:48 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ t_digest			hash_stream(t_stream stream,
 	t_ssl_main main, t_print_digest *cb)
 {
 	t_digest	d;
+	int			eos;
 	int			last;
 	size_t		total;
 	t_chunk		*chunk;
 
+	eos = 0;
 	last = 0;
 	total = 0;
 	if (stream.fd < 0 && !stream.string)
@@ -69,7 +71,7 @@ t_digest			hash_stream(t_stream stream,
 	{
 		chunk = get_chunk_stream(stream, main.info.chunk_size);
 		total += chunk->size;
-		last = prepare_chunk(chunk, total, main.info.big_endian);
+		last = prepare_chunk(chunk, total, &eos, main.info.big_endian);
 		main.hash(chunk->msg, d);
 		ft_free(2, chunk->msg, chunk);
 	}
