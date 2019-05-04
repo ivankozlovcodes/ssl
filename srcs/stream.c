@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 10:32:16 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:18:58 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 11:55:54 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_stream			stream_str(char *string)
 	t_stream		s;
 
 	s.fd = -1;
+	s.pos = 0;
 	s.content = NULL;
 	s.filename = NULL;
 	s.string = string;
@@ -66,13 +67,14 @@ t_digest			hash_stream(t_stream stream,
 	d = main.init_digest();
 	while (!last)
 	{
-		chunk = get_chunk_stream(stream, main.chunk_size);
-		last = prepare_chunk(chunk, &total);
+		chunk = get_chunk_stream(stream, main.info.chunk_size);
+		total += chunk->size;
+		last = prepare_chunk(chunk, total, main.info.big_endian);
 		main.hash(chunk->msg, d);
 		ft_free(2, chunk->msg, chunk);
 	}
 	if (cb)
-		(*cb)(d, stream);
+		(*cb)(main, d, stream);
 	DOIFTRUE(stream.content, string_destroy(stream.content, FALSE));
 	return (d);
 }

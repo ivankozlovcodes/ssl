@@ -6,15 +6,16 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 07:55:36 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 10:51:38 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 12:06:17 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
 #include "ftstring.h"
-#include "ft_printf.h"
 
 #include "memory.h"
+#include "ftstring.h"
+
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -24,18 +25,28 @@ char			*g_hash_func_name = NULL;
 void			init_ssl_main(char *algorithm, t_ssl_main *main)
 {
 	int							idx;
-	static size_t				sizes[ALG_NUM] = { 64, 64 };
+	char						*upper;
 	static t_hash_chunk			hash_funcs[] = { &md5, &sha256 };
-	static t_init_digest		digest_funcs[] = { &md5_init_digest, &sha256_init_digest };
-	static char const			*lookup[ALG_NUM + 1] = { "md5", "sha256", NULL };
+	static t_init_digest		digest_funcs[] = { &md5_init_digest,
+		&sha256_init_digest };
+	static t_algorithm_info		alg_info[ALG_NUM + 1] = {
+		{ 64, 0, "MD5" }, { 64, 1, "SHA256" }
+	};
 
-	g_hash_func_name = algorithm;
-	idx = ft_straridx(algorithm, (char **)lookup);
-	if (idx == -1)
+	idx = -1;
+	upper = ft_strtoupper(ft_strdup(algorithm));
+	while (++idx < ALG_NUM)
+		if (ft_strequ(upper, alg_info[idx].name))
+		{
+			g_hash_func_name = algorithm;
+			main->info = alg_info[idx];
+			main->hash = hash_funcs[idx];
+			main->init_digest = digest_funcs[idx];
+			break ;
+		}
+	ft_free(1, upper);
+	if (idx == ALG_NUM)
 		error_handler(ERR_INVALID_COMMAND, 1, algorithm);
-	main->chunk_size = sizes[idx];
-	main->hash = hash_funcs[idx];
-	main->init_digest = digest_funcs[idx];
 }
 
 void			hash_main(int ac, char *av[], t_ssl_main m)

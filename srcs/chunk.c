@@ -6,16 +6,15 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 05:28:31 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:29:38 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 12:09:32 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
-#include "structs.h"
 #include "ftstream.h"
 
 #include "memory.h"
-#include "ft_printf.h"
+#include "numbers.h"
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -47,21 +46,20 @@ static t_chunk			*get_chunk(int fd, size_t chunk_size)
 	return (chunk);
 }
 
-int						prepare_chunk(t_chunk *chunk, size_t *total)
+int						prepare_chunk(t_chunk *chunk,
+	size_t total, int is_big_endian)
 {
 	int			last;
-	size_t		bits_total;
 
 	last = 0;
-	*total = *total + chunk->size;
-	bits_total = *total * 8;
 	if (chunk->size < chunk->max_size)
 	{
 		SET_CHUNK_BIT(chunk);
 		last = chunk->size < chunk->max_size - 8;
+		total = is_big_endian ? to_le_64(total * 8) : total * 8;
 		if (last)
 			ft_memcpy((chunk->msg + chunk->max_size - 8),
-				&bits_total, sizeof(size_t));
+				&total, sizeof(size_t));
 	}
 	return (last);
 }

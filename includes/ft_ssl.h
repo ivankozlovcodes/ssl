@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 12:38:07 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 06:57:05 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 12:12:12 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ struct							s_ssl_main
 	size_t						chunk_size;
 
 	t_hash_chunk				hash;
+	t_algorithm_info			info;
 	t_init_digest				init_digest;
 };
 typedef struct s_ssl_main		t_ssl_main;
@@ -82,14 +83,19 @@ int								ssl_get_toggle_flag(int get, int toggle);
 **	Chunk
 */
 
-int								prepare_chunk(t_chunk *chunk, size_t *total);
 t_chunk							*get_chunk_string(t_stream stream, size_t size);
 t_chunk							*get_chunk_stream(t_stream stream, size_t size);
+int								prepare_chunk(t_chunk *chunk,
+	size_t total, int is_big_endian);
+
+typedef void					(*t_print_digest)(t_ssl_main,
+	t_digest, t_stream);
 
 t_digest						hash_stream(t_stream stream,
 	t_ssl_main main, t_print_digest *cb);
 
-void							ssl_print_digest(t_digest d, t_stream s);
+void							ssl_print_digest(t_ssl_main main,
+	t_digest d, t_stream s);
 
 /*
 **	Debug

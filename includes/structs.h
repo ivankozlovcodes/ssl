@@ -6,7 +6,7 @@
 /*   By: ivankozlov <ivankozlov@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 22:03:06 by ivankozlov        #+#    #+#             */
-/*   Updated: 2019/05/04 05:49:22 by ivankozlov       ###   ########.fr       */
+/*   Updated: 2019/05/04 12:15:48 by ivankozlov       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@
 
 # include "dstring.h"
 
-struct							s_md5_digest
+struct							s_algorithm_info
 {
-	unsigned int		a;
-	unsigned int		b;
-	unsigned int		c;
-	unsigned int		d;
+	int							chunk_size;
+	int							big_endian;
+	char						*name;
 };
-typedef struct s_md5_digest		t_md5_digest;
+typedef struct s_algorithm_info	t_algorithm_info;
 
 typedef struct					s_chunk
 {
@@ -46,10 +45,6 @@ typedef void					(*t_md5_step_helper) (unsigned int *,
 	unsigned int*, unsigned int*, int);
 
 typedef t_digest				(*t_init_digest)(void);
-typedef void					(*t_print_digest)(t_digest, t_stream);
-typedef t_chunk					(*t_reader)(t_stream, size_t size);
-typedef t_digest				(*t_hash_func)(t_stream, t_print_digest*);
-typedef void					(*t_hash_main)(int, char*[], t_hash_func);
 typedef void					(*t_hash_chunk)(unsigned char *, t_digest);
 
 #endif
